@@ -1,0 +1,6 @@
+@ChalanaChithram.CastService.Api_HostAddress = http://localhost:5287
+
+GET {{ChalanaChithram.CastService.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
