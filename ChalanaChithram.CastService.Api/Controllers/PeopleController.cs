@@ -1,54 +1,24 @@
-﻿using ChalanaChithram.CastService.Api.Data;
-using ChalanaChithram.CastService.Api.DTOs;
+﻿using ChalanaChithram.CastService.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ChalanaChithram.CastService.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PeopleController(AppDbContext dbContext) : ControllerBase
+public class PeopleController(IPersonService personService) : ControllerBase
 {
-    private readonly AppDbContext dbContext = dbContext;
+    private readonly IPersonService personService = personService;
 
     [HttpGet]
     public async Task<IActionResult> GetAllPeople()
     {
-        List<PersonDto> people = await dbContext.People
-            .AsNoTracking()
-            .OrderBy(x => x.Name)
-            .Select(x => new PersonDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                ProfileImageUrl = x.ProfileImageUrl,
-                InstagramUrl = x.InstagramUrl,
-                TwitterUrl = x.TwitterUrl,
-                FacebookUrl = x.FacebookUrl,
-                YoutubeUrl = x.YoutubeUrl
-            })
-            .ToListAsync();
-
-        return Ok(people);
+        return Ok(await personService.GetAllPeopleAsync());
     }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetPersonById(int id)
     {
-        PersonDto? person = await dbContext.People
-            .AsNoTracking()
-            .Where(x => x.Id == id)
-            .Select(x => new PersonDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                ProfileImageUrl = x.ProfileImageUrl,
-                InstagramUrl = x.InstagramUrl,
-                TwitterUrl = x.TwitterUrl,
-                FacebookUrl = x.FacebookUrl,
-                YoutubeUrl = x.YoutubeUrl
-            })
-            .FirstOrDefaultAsync();
+        var person = await personService.GetPersonByIdAsync(id);
 
         if (person == null)
         {

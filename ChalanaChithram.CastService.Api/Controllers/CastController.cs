@@ -1,80 +1,39 @@
-﻿using ChalanaChithram.CastService.Api.Data;
-using ChalanaChithram.CastService.Api.DTOs;
+﻿using ChalanaChithram.CastService.Api.Dtos;
+using ChalanaChithram.CastService.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ChalanaChithram.CastService.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
-public class CastController(AppDbContext dbContext) : ControllerBase
+[Route("api/cast")]
+public class CastController(ICastService castService) : ControllerBase
 {
-    private readonly AppDbContext dbContext = dbContext;
+    private readonly ICastService castService = castService;
 
-    [HttpGet("by-movie/{movieId:int}")]
+    /// <summary>
+    /// Get all cast members for a movie
+    /// </summary>
+    [HttpGet("movie/{movieId:int}")]
     public async Task<IActionResult> GetCastByMovieId(int movieId)
     {
-        List<MovieCreditDto> credits = await dbContext.MovieCredits
-            .AsNoTracking()
-            .Where(x => x.MovieId == movieId)
-            .Include(x => x.Person)
-            .OrderBy(x => x.Order)
-            .Select(x => new MovieCreditDto
-            {
-                Id = x.Id,
-                MovieId = x.MovieId,
-                PersonId = x.PersonId,
-                Role = x.Role,
-                CharacterName = x.CharacterName,
-                Order = x.Order,
-                Person = x.Person == null ? null : new PersonDto
-                {
-                    Id = x.Person.Id,
-                    Name = x.Person.Name,
-                    ProfileImageUrl = x.Person.ProfileImageUrl,
-                    InstagramUrl = x.Person.InstagramUrl,
-                    TwitterUrl = x.Person.TwitterUrl,
-                    FacebookUrl = x.Person.FacebookUrl,
-                    YoutubeUrl = x.Person.YoutubeUrl
-                }
-            })
-            .ToListAsync();
+        List<MovieCreditDto> cast =
+            await castService.GetCastByMovieIdAsync(movieId);
 
-        return Ok(credits);
+        return Ok(cast);
     }
 
-
+    /// <summary>
+    /// Get a single cast credit by credit id
+    /// </summary>
     [HttpGet("credit/{creditId:int}")]
     public async Task<IActionResult> GetCreditById(int creditId)
     {
-        MovieCreditDto? credit = await dbContext.MovieCredits
-            .AsNoTracking()
-            .Include(x => x.Person)
-            .Where(x => x.Id == creditId)
-            .Select(x => new MovieCreditDto
-            {
-                Id = x.Id,
-                MovieId = x.MovieId,
-                PersonId = x.PersonId,
-                Role = x.Role,
-                CharacterName = x.CharacterName,
-                Order = x.Order,
-                Person = x.Person == null ? null : new PersonDto
-                {
-                    Id = x.Person.Id,
-                    Name = x.Person.Name,
-                    ProfileImageUrl = x.Person.ProfileImageUrl,
-                    InstagramUrl = x.Person.InstagramUrl,
-                    TwitterUrl = x.Person.TwitterUrl,
-                    FacebookUrl = x.Person.FacebookUrl,
-                    YoutubeUrl = x.Person.YoutubeUrl
-                }
-            })
-            .FirstOrDefaultAsync();
+        MovieCreditDto? credit =
+            await castService.GetCreditByIdAsync(creditId);
 
         if (credit == null)
         {
-            return NotFound(new { message = "Movie credit not found." });
+            return NotFound();
         }
 
         return Ok(credit);

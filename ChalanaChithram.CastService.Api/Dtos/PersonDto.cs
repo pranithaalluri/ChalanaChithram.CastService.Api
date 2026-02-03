@@ -1,4 +1,4 @@
-﻿namespace ChalanaChithram.CastService.Api.DTOs;
+﻿namespace ChalanaChithram.CastService.Api.Dtos;
 
 public class PersonDto
 {
@@ -6,7 +6,7 @@ public class PersonDto
 
     public string Name { get; set; } = string.Empty;
 
-    public string? ProfileImageUrl { get; set; }
+    public byte[] ProfileImage { get; set; } = Array.Empty<byte>();
 
     public string? InstagramUrl { get; set; }
     public string? TwitterUrl { get; set; }

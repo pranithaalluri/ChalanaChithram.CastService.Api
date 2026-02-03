@@ -1,4 +1,4 @@
-﻿namespace ChalanaChithram.CastService.Api.DTOs;
+﻿namespace ChalanaChithram.CastService.Api.Dtos;
 
 public class MovieCreditDto
 {

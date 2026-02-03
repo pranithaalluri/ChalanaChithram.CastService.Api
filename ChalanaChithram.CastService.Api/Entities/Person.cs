@@ -6,7 +6,7 @@ public class Person
 
     public string Name { get; set; } = string.Empty;
 
-    public string? ProfileImageUrl { get; set; }
+    public byte[] ProfileImage { get; set; } = Array.Empty<byte>();
     public string? InstagramUrl { get; set; }
     public string? TwitterUrl { get; set; }
     public string? FacebookUrl { get; set; }

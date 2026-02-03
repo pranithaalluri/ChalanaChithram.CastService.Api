@@ -16,7 +16,8 @@ public static class CastSeedData
             {
                 Id = 1,
                 Name = "Mahesh Babu",
-                ProfileImageUrl = null,
+                ProfileImage = Array.Empty<byte>()
+            ,
                 InstagramUrl = "https://www.instagram.com/urstrulymahesh/",
                 TwitterUrl = null,
                 FacebookUrl = null,
@@ -26,7 +27,8 @@ public static class CastSeedData
             {
                 Id = 2,
                 Name = "S. S. Rajamouli",
-                ProfileImageUrl = null,
+                                ProfileImage = Array.Empty<byte>()
+            ,
                 InstagramUrl = "https://www.instagram.com/ssrajamouli/",
                 TwitterUrl = "https://x.com/ssrajamouli",
                 FacebookUrl = null,
@@ -36,7 +38,7 @@ public static class CastSeedData
             {
                 Id = 3,
                 Name = "Anirudh Ravichander",
-                ProfileImageUrl = null,
+                ProfileImage = Array.Empty < byte >(),
                 InstagramUrl = "https://www.instagram.com/anirudhofficial/",
                 TwitterUrl = null,
                 FacebookUrl = null,
@@ -46,7 +48,7 @@ public static class CastSeedData
             {
                 Id = 4,
                 Name = "Samantha Ruth Prabhu",
-                ProfileImageUrl = null,
+                ProfileImage = Array.Empty < byte >(),
                 InstagramUrl = "https://www.instagram.com/samantharuthprabhuoffl/",
                 TwitterUrl = null,
                 FacebookUrl = null,
@@ -56,7 +58,7 @@ public static class CastSeedData
             {
                 Id = 5,
                 Name = "Prabhas",
-                ProfileImageUrl = null,
+                ProfileImage = Array.Empty < byte >(),
                 InstagramUrl = null,
                 TwitterUrl = null,
                 FacebookUrl = null,

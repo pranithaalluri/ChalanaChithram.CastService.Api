@@ -19,8 +19,7 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
             .IsRequired()
             .HasMaxLength(150);
 
-        builder.Property(x => x.ProfileImageUrl)
-            .HasMaxLength(500)
+        builder.Property(x => x.ProfileImage)
             .IsRequired(false);
 
         builder.Property(x => x.InstagramUrl).HasMaxLength(500).IsRequired(false);
