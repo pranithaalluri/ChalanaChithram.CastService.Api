@@ -11,37 +11,28 @@ public class CastService(ICastRepository castRepository) : ICastService
 
     public async Task<List<MovieCreditDto>> GetCastByMovieIdAsync(int movieId)
     {
-        try
-        {
-            List<MovieCredit> credits =
-                await castRepository.GetByMovieIdAsync(movieId);
 
-            return credits.Select(MapToDto).ToList();
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        List<MovieCredit> credits =
+            await castRepository.GetByMovieIdAsync(movieId);
+
+        return credits.Select(MapToDto).ToList();
+
+
     }
 
     public async Task<MovieCreditDto?> GetCreditByIdAsync(int creditId)
     {
-        try
-        {
-            MovieCredit? credit =
-                await castRepository.GetByCreditIdAsync(creditId);
 
-            if (credit == null)
-            {
-                return null;
-            }
+        MovieCredit? credit =
+            await castRepository.GetByCreditIdAsync(creditId);
 
-            return MapToDto(credit);
-        }
-        catch (Exception)
+        if (credit == null)
         {
-            throw;
+            return null;
         }
+
+        return MapToDto(credit);
+
     }
 
     private static MovieCreditDto MapToDto(MovieCredit x)

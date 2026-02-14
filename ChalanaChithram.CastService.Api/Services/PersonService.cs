@@ -2,7 +2,6 @@
 using ChalanaChithram.CastService.Api.Entities;
 using ChalanaChithram.CastService.Api.Repositories.Interfaces;
 using ChalanaChithram.CastService.Api.Services.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace ChalanaChithram.CastService.Api.Services;
 
@@ -15,32 +14,15 @@ public class PersonService(
 
     public async Task<List<PersonDto>> GetAllPeopleAsync()
     {
-        try
-        {
-            List<Person> people = await personRepository.GetAllAsync();
+        List<Person> people = await personRepository.GetAllAsync();
 
-            return people.Select(MapToDto).ToList();
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Error fetching people list");
-            throw;
-        }
+        return people.Select(MapToDto).ToList();
     }
 
     public async Task<PersonDto?> GetPersonByIdAsync(int id)
     {
-        try
-        {
-            Person? person = await personRepository.GetByIdAsync(id);
-
-            return person == null ? null : MapToDto(person);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Error fetching person with id {PersonId}", id);
-            throw;
-        }
+        Person? person = await personRepository.GetByIdAsync(id);
+        return person == null ? null : MapToDto(person);
     }
 
     private static PersonDto MapToDto(Person person)
