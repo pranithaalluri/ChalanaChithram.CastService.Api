@@ -11,13 +11,10 @@ public class CastService(ICastRepository castRepository) : ICastService
 
     public async Task<List<MovieCreditDto>> GetCastByMovieIdAsync(int movieId)
     {
-
         List<MovieCredit> credits =
             await castRepository.GetByMovieIdAsync(movieId);
 
-        return credits.Select(MapToDto).ToList();
-
-
+        return [.. credits.Select(MapToDto)];//collection express {.ToList();} to .. mapToDto
     }
 
     public async Task<MovieCreditDto?> GetCreditByIdAsync(int creditId)

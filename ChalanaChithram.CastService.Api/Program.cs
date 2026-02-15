@@ -1,13 +1,21 @@
 using ChalanaChithram.CastService.Api.Data;
+using ChalanaChithram.CastService.Api.Middlewares;
 using ChalanaChithram.CastService.Api.Repositories;
 using ChalanaChithram.CastService.Api.Repositories.Interfaces;
 using ChalanaChithram.CastService.Api.Seed;
 using ChalanaChithram.CastService.Api.Services;
 using ChalanaChithram.CastService.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
+builder.Host.UseSerilog();
 builder.Services.AddControllers();
 
 string? connectionString = builder.Configuration.GetConnectionString("CastServiceDb");
@@ -32,6 +40,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 WebApplication app = builder.Build();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment() && args.Length == 0)
 {
