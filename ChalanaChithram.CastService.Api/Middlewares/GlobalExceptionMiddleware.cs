@@ -1,9 +1,20 @@
-﻿using System.Net;
+﻿using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace ChalanaChithram.CastService.Api.Middlewares;
-public class GlobalExceptionMiddleware(RequestDelegate next)
+
+public class GlobalExceptionMiddleware
 {
-    private readonly RequestDelegate next = next;
+    private readonly RequestDelegate next;
+    private readonly ILogger<GlobalExceptionMiddleware> logger;
+
+    public GlobalExceptionMiddleware(
+        RequestDelegate next,
+        ILogger<GlobalExceptionMiddleware> logger)
+    {
+        this.next = next;
+        this.logger = logger;
+    }
 
     public async Task Invoke(HttpContext context)
     {
@@ -11,16 +22,17 @@ public class GlobalExceptionMiddleware(RequestDelegate next)
         {
             await next(context);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            logger.LogError(ex, "Unhandled exception");
+
+            context.Response.StatusCode = 500;
             context.Response.ContentType = "application/json";
 
             await context.Response.WriteAsJsonAsync(new
             {
-                Message = "Something went wrong"
+                message = "Internal server error"
             });
         }
     }
 }
-
